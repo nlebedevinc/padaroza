@@ -21,3 +21,10 @@ export interface CountryMeta {
 }
 
 export type ViewMode = 'map' | 'globe'
+
+export type ActivePanel = 'identity' | 'stats' | 'info' | null
+
+export interface BestRequirement {
+  req: VisaRequirement
+  passport: string // ISO-2 of the passport that yields this result
+}

@@ -1,10 +1,10 @@
 import { useApp } from '@/context/AppContext'
-import { getStats, CATEGORY_COLORS } from '@/lib/visa-data'
+import { getCombinedStats, CATEGORY_COLORS } from '@/lib/visa-data'
 
 export function StatsBar() {
-  const { passport } = useApp()
+  const { passports } = useApp()
 
-  if (!passport) {
+  if (passports.length === 0) {
     return (
       <div className="absolute bottom-0 left-0 right-0 z-10 h-10 border-t border-border bg-background/80 backdrop-blur-sm flex items-center justify-center">
         <span className="text-xs text-muted-foreground">Select a passport to see access statistics</span>
@@ -12,14 +12,14 @@ export function StatsBar() {
     )
   }
 
-  const stats = getStats(passport)
+  const { combined: stats } = getCombinedStats(passports)
 
   const items = [
-    { label: 'Visa-free', count: stats['visa-free'], color: CATEGORY_COLORS['visa-free'] },
-    { label: 'On arrival', count: stats['on-arrival'] + stats['eta'], color: CATEGORY_COLORS['on-arrival'] },
-    { label: 'E-visa', count: stats['e-visa'], color: CATEGORY_COLORS['e-visa'] },
-    { label: 'Visa req.', count: stats['visa-required'], color: CATEGORY_COLORS['visa-required'] },
-    { label: 'No entry', count: stats['no-admission'], color: CATEGORY_COLORS['no-admission'] },
+    { label: 'Visa-free',  count: stats['visa-free'],                        color: CATEGORY_COLORS['visa-free'] },
+    { label: 'On arrival', count: stats['on-arrival'] + stats['eta'],        color: CATEGORY_COLORS['on-arrival'] },
+    { label: 'E-visa',     count: stats['e-visa'],                           color: CATEGORY_COLORS['e-visa'] },
+    { label: 'Visa req.',  count: stats['visa-required'],                    color: CATEGORY_COLORS['visa-required'] },
+    { label: 'No entry',   count: stats['no-admission'],                     color: CATEGORY_COLORS['no-admission'] },
   ]
 
   return (

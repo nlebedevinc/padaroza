@@ -8,24 +8,27 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { ExternalLink } from 'lucide-react'
 import { useApp } from '@/context/AppContext'
-import { getRequirement, CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/visa-data'
+import { getBestRequirement, CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/visa-data'
 import { getCountryName } from '@/lib/countries'
 
 export function CountrySheet() {
-  const { selectedCountry, setSelectedCountry, passport } = useApp()
+  const { selectedCountry, setSelectedCountry, passports } = useApp()
 
   const open = !!selectedCountry
-  const req = passport && selectedCountry
-    ? getRequirement(passport, selectedCountry)
-    : null
+  const isOwnCountry = passports.includes(selectedCountry ?? '')
+  const bestResult =
+    passports.length > 0 && selectedCountry && !isOwnCountry
+      ? getBestRequirement(passports, selectedCountry)
+      : null
+
+  const req = bestResult?.req ?? null
+  const bestPassport = bestResult?.passport ?? null
 
   const countryName = selectedCountry ? getCountryName(selectedCountry) : ''
   const flagCode = selectedCountry?.toLowerCase() ?? ''
 
-  const isOwnCountry = passport === selectedCountry
-
   return (
-    <Sheet open={open} onOpenChange={v => !v && setSelectedCountry(null)}>
+    <Sheet open={open} onOpenChange={(v: boolean) => !v && setSelectedCountry(null)}>
       <SheetContent
         side="right"
         className="w-80 sm:w-96 border-l border-border bg-background p-0"
@@ -47,10 +50,14 @@ export function CountrySheet() {
 
         <div className="px-6 py-5 space-y-4">
           {isOwnCountry ? (
-            <p className="text-sm text-muted-foreground">This is your home country.</p>
+            <p className="text-sm text-muted-foreground">
+              {passports.length > 1
+                ? 'This is one of your home countries.'
+                : 'This is your home country.'}
+            </p>
           ) : req ? (
             <>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <p className="text-xs text-muted-foreground uppercase tracking-wider">Access</p>
                 <Badge
                   className="text-sm font-medium text-white border-0"
@@ -58,6 +65,20 @@ export function CountrySheet() {
                 >
                   {CATEGORY_LABELS[req.category]}
                 </Badge>
+
+                {passports.length > 1 && bestPassport && (
+                  <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    Best via
+                    <img
+                      src={`https://flagcdn.com/w20/${bestPassport.toLowerCase()}.png`}
+                      alt={getCountryName(bestPassport)}
+                      width={14}
+                      height={10}
+                      className="inline shrink-0"
+                    />
+                    {getCountryName(bestPassport)}
+                  </p>
+                )}
               </div>
 
               {req.days && (
@@ -73,7 +94,7 @@ export function CountrySheet() {
               <Separator />
 
               <a
-                href={`https://www.passportindex.org/`}
+                href="https://www.passportindex.org/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
@@ -82,10 +103,12 @@ export function CountrySheet() {
                 passportindex.org
               </a>
             </>
-          ) : passport ? (
+          ) : passports.length > 0 ? (
             <p className="text-sm text-muted-foreground">No visa data available for this destination.</p>
           ) : (
-            <p className="text-sm text-muted-foreground">Select your passport to see visa requirements.</p>
+            <p className="text-sm text-muted-foreground">
+              Add a passport in the Identity panel to see visa requirements.
+            </p>
           )}
         </div>
       </SheetContent>

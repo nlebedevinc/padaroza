@@ -1,32 +1,28 @@
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps'
 import { useTheme } from 'next-themes'
 import { useApp } from '@/context/AppContext'
-import { getVisaRequirements, CATEGORY_COLORS } from '@/lib/visa-data'
+import { getBestRequirement, CATEGORY_COLORS } from '@/lib/visa-data'
 import { numericToIso2, getCountryName } from '@/lib/countries'
 
 const GEO_URL = '/world-110m.json'
 
 function getCountryColor(
   iso2: string,
-  passport: string | null,
-  requirements: Record<string, { category: string }> | null,
+  passports: string[],
   isDark: boolean
 ): string {
-  if (!passport || !requirements) {
-    return isDark ? '#3f3f46' : '#e4e4e7'
-  }
-  if (iso2 === passport) return '#52525b'
-  const req = requirements[iso2]
-  if (!req) return isDark ? '#3f3f46' : '#e4e4e7'
-  return CATEGORY_COLORS[req.category as keyof typeof CATEGORY_COLORS] ?? (isDark ? '#3f3f46' : '#e4e4e7')
+  const noData = isDark ? '#3f3f46' : '#e4e4e7'
+  if (passports.length === 0) return noData
+  if (passports.includes(iso2)) return '#52525b'
+  const best = getBestRequirement(passports, iso2)
+  if (!best) return noData
+  return CATEGORY_COLORS[best.req.category] ?? noData
 }
 
 export function MapView() {
-  const { passport, setSelectedCountry, setHoveredCountry, hoveredCountry } = useApp()
+  const { passports, setSelectedCountry, setHoveredCountry, hoveredCountry } = useApp()
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
-
-  const requirements = passport ? getVisaRequirements(passport) : null
 
   const oceanBg = isDark ? '#09090b' : '#f4f4f5'
   const borderColor = isDark ? 'rgba(39,39,42,0.6)' : 'rgba(212,212,216,0.8)'
@@ -41,11 +37,10 @@ export function MapView() {
         <Geographies geography={GEO_URL}>
           {({ geographies }) =>
             geographies.map(geo => {
-              // world-atlas@2 uses numeric ISO IDs; no ISO_A2 in properties
               const iso2 = numericToIso2(geo.id as string)
               const name = getCountryName(iso2) || (geo.properties.name as string) || iso2
               const isHovered = hoveredCountry === iso2
-              const fill = getCountryColor(iso2, passport, requirements, isDark)
+              const fill = getCountryColor(iso2, passports, isDark)
 
               return (
                 <Geography
@@ -64,12 +59,7 @@ export function MapView() {
                       cursor: iso2 ? 'pointer' : 'default',
                       transition: 'opacity 100ms',
                     },
-                    hover: {
-                      fill,
-                      outline: 'none',
-                      opacity: 0.75,
-                      cursor: iso2 ? 'pointer' : 'default',
-                    },
+                    hover: { fill, outline: 'none', opacity: 0.75, cursor: iso2 ? 'pointer' : 'default' },
                     pressed: { fill, outline: 'none' },
                   }}
                   onMouseEnter={() => iso2 && setHoveredCountry(iso2)}
