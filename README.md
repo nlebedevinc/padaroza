@@ -69,7 +69,7 @@ Connects directly to Cloudflare Pages — push to `main` and it deploys automati
 ```
 Build command:  pnpm build
 Output dir:     dist
-Node version:   20
+Node version:   24
 ```
 
 ## License
