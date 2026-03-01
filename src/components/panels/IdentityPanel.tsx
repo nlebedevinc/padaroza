@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { X, ChevronsUpDown, AlertCircle, Plus } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -79,7 +78,7 @@ function CountryCombobox({
           <ChevronsUpDown className="h-3 w-3 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-64 p-0" align="start">
+      <PopoverContent className="w-64 p-0" side="right" align="start" sideOffset={8}>
         <Command>
           <CommandInput placeholder="Search…" className="h-8 text-xs" />
           <CommandList>
@@ -163,13 +162,12 @@ export function IdentityPanel() {
       <div className="space-y-3">
         <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
           Residency
+          <span className="ml-1.5 normal-case tracking-normal font-normal text-muted-foreground/60">coming soon</span>
         </p>
 
-        {residencies.length === 0 && (
-          <p className="text-xs text-muted-foreground">
-            Countries where you hold a residence permit.
-          </p>
-        )}
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          Residence permits unlock real travel access — a US Green Card, Schengen residence permit, or UAE residence each let you enter certain countries that your passport alone wouldn't. We're working on mapping this data.
+        </p>
 
         {residencies.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
@@ -186,12 +184,12 @@ export function IdentityPanel() {
           placeholder="Add residency"
         />
 
-        <div className={cn('flex gap-1.5 text-xs text-muted-foreground', residencies.length > 0 ? 'mt-2' : '')}>
-          <AlertCircle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-          <span>
-            Residency-based travel rights are not reflected on the map — no comprehensive open dataset covers this yet.
-          </span>
-        </div>
+        {residencies.length > 0 && (
+          <div className="flex gap-1.5 text-xs text-muted-foreground">
+            <AlertCircle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+            <span>Saved for when the data is ready — not yet reflected on the map.</span>
+          </div>
+        )}
       </div>
     </div>
   )

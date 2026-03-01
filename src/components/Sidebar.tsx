@@ -13,7 +13,7 @@ export function Sidebar() {
   const { activePanel, setActivePanel, passports } = useApp()
 
   return (
-    <div className="absolute left-0 top-12 bottom-10 z-20 w-12 flex flex-col items-center py-2 gap-1">
+    <div className="absolute left-0 top-12 bottom-10 z-20 w-12 flex flex-col items-center py-2 gap-1 border-r border-border bg-background/80 backdrop-blur-sm">
       {RAIL_ITEMS.map(({ panel, Icon, label }) => {
         const isActive = activePanel === panel
         const showBadge = panel === 'identity' && passports.length > 0
