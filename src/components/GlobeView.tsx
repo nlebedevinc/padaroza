@@ -14,18 +14,14 @@ interface GeoFeature {
   geometry: unknown
 }
 
-function getCountryColor(
-  iso2: string,
-  passports: string[],
-  isDark: boolean
-): string {
-  const noData = isDark ? '#3f3f46cc' : '#e4e4e7cc'
+// Globe is always dark regardless of app theme
+function getCountryColor(iso2: string, passports: string[]): string {
+  const noData = '#3f3f46cc'
   if (passports.length === 0) return noData
   if (passports.includes(iso2)) return '#52525bcc'
   const best = getBestRequirement(passports, iso2)
   if (!best) return noData
-  const hex = CATEGORY_COLORS[best.req.category] ?? (isDark ? '#3f3f46' : '#e4e4e7')
-  return hex + 'cc'
+  return (CATEGORY_COLORS[best.req.category] ?? '#3f3f46') + 'cc'
 }
 
 export function GlobeView() {
@@ -57,9 +53,9 @@ export function GlobeView() {
     (feat: object) => {
       const geo = feat as GeoFeature
       const iso2 = numericToIso2(geo.id as string)
-      return getCountryColor(iso2, passports, isDark)
+      return getCountryColor(iso2, passports)
     },
-    [passports, isDark]
+    [passports]
   )
 
   const getPolygonLabel = useCallback((feat: object) => {
@@ -85,13 +81,13 @@ export function GlobeView() {
       ref={globeRef}
       globeImageUrl=""
       backgroundColor={isDark ? '#09090b' : '#f4f4f5'}
-      atmosphereColor={isDark ? '#27272a' : '#d4d4d8'}
+      atmosphereColor="#3f3f46"
       atmosphereAltitude={0.15}
       polygonsData={countries}
       polygonGeoJsonGeometry={(d: object) => (d as GeoFeature).geometry as never}
       polygonCapColor={getPolygonColor}
-      polygonSideColor={() => 'rgba(0,0,0,0.1)'}
-      polygonStrokeColor={() => (isDark ? '#27272a' : '#d4d4d8')}
+      polygonSideColor={() => 'rgba(0,0,0,0.15)'}
+      polygonStrokeColor={() => 'rgba(255,255,255,0.18)'}
       polygonAltitude={0.005}
       polygonLabel={getPolygonLabel}
       onPolygonClick={handleClick}

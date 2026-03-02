@@ -24,8 +24,8 @@ export function MapView() {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
 
-  const oceanBg = isDark ? '#09090b' : '#f4f4f5'
-  const borderColor = isDark ? 'rgba(39,39,42,0.6)' : 'rgba(212,212,216,0.8)'
+  const oceanBg     = isDark ? '#09090b' : '#f4f4f5'
+  const borderColor = isDark ? 'rgba(255,255,255,0.22)' : 'rgba(0,0,0,0.18)'
 
   return (
     <div className="w-full h-full" style={{ backgroundColor: oceanBg }}>
@@ -59,7 +59,7 @@ export function MapView() {
                       cursor: iso2 ? 'pointer' : 'default',
                       transition: 'opacity 100ms',
                     },
-                    hover: { fill, outline: 'none', opacity: 0.75, cursor: iso2 ? 'pointer' : 'default' },
+                    hover:   { fill, outline: 'none', opacity: 0.75, cursor: iso2 ? 'pointer' : 'default' },
                     pressed: { fill, outline: 'none' },
                   }}
                   onMouseEnter={() => iso2 && setHoveredCountry(iso2)}
