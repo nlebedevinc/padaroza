@@ -1,3 +1,4 @@
+import { useApp } from '@/context/AppContext'
 import { CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/visa-data'
 import type { VisaCategory } from '@/lib/types'
 
@@ -10,8 +11,15 @@ const LEGEND_ITEMS: VisaCategory[] = [
 ]
 
 export function Legend() {
+  const { selectedCountry } = useApp()
+  const panelOpen = !!selectedCountry
+
   return (
-    <div className="absolute bottom-12 right-4 z-10 rounded-md border border-border bg-background/80 backdrop-blur-sm px-3 py-2 space-y-1">
+    <div
+      className={`absolute bottom-12 z-10 rounded-md border border-border bg-background/80 backdrop-blur-sm px-3 py-2 space-y-1
+        transition-all duration-200 ease-in-out
+        ${panelOpen ? 'right-[336px]' : 'right-4'}`}
+    >
       {LEGEND_ITEMS.map(cat => (
         <div key={cat} className="flex items-center gap-2">
           <span
