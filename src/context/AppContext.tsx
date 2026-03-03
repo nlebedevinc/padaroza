@@ -18,9 +18,9 @@ interface AppState {
 
 const AppContext = createContext<AppState | null>(null)
 
-const PASSPORTS_KEY = 'mezha:passports'
-const RESIDENCIES_KEY = 'mezha:residencies'
-const LEGACY_KEY = 'mezha:passport'
+const PASSPORTS_KEY = 'padaroza:passports'
+const RESIDENCIES_KEY = 'padaroza:residencies'
+const LEGACY_KEY = 'padaroza:passport'
 
 function readPassports(): string[] {
   try {

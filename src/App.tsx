@@ -24,7 +24,7 @@ function Layout() {
     <div className="relative h-dvh w-full overflow-hidden bg-background">
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-30 h-12 border-b border-border bg-background/80 backdrop-blur-sm flex items-center px-4">
-        <span className="font-medium tracking-tight text-sm select-none pl-12">mezha</span>
+        <span className="font-medium tracking-tight text-sm select-none pl-12">padaroza</span>
         <div className="flex-1 flex justify-center">
           <ViewToggle />
         </div>
