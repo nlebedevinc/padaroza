@@ -74,7 +74,10 @@ const en = {
   welcome: {
     headline:    'Where can you go?',
     description: 'Select your passport — every country fills with a color showing your visa access conditions.',
-    cta:         'Add your passport',
+    step1:       'Click the person icon in the left sidebar',
+    step2:       'Add one or more passports (up to three)',
+    step3:       'Click any country to see entry conditions',
+    cta:         'Open Identity panel',
   },
   language: {
     en: 'English',
