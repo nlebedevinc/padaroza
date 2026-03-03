@@ -5,10 +5,12 @@ import { Separator } from '@/components/ui/separator'
 import { useApp } from '@/context/AppContext'
 import { getBestRequirement, CATEGORY_COLORS } from '@/lib/visa-data'
 import { getCountryName } from '@/lib/countries'
+import { useIsMobile } from '@/lib/useIsMobile'
 
 export function CountrySheet() {
   const { selectedCountry, setSelectedCountry, passports } = useApp()
   const { t } = useTranslation()
+  const isMobile = useIsMobile()
 
   const open = !!selectedCountry
   const isOwnCountry = passports.includes(selectedCountry ?? '')
@@ -22,12 +24,12 @@ export function CountrySheet() {
   const countryName = selectedCountry ? getCountryName(selectedCountry) : ''
   const flagCode = selectedCountry?.toLowerCase() ?? ''
 
+  const positionClasses = isMobile
+    ? `bottom-0 left-0 right-0 max-h-[65vh] rounded-t-xl border-t border-border ${open ? 'translate-y-0' : 'translate-y-full'}`
+    : `right-0 top-12 bottom-10 w-80 border-l border-border ${open ? 'translate-x-0' : 'translate-x-full'}`
+
   return (
-    <div
-      className={`absolute right-0 top-12 bottom-10 z-20 w-80 border-l border-border bg-background overflow-y-auto
-        transition-transform duration-200 ease-in-out
-        ${open ? 'translate-x-0' : 'translate-x-full'}`}
-    >
+    <div className={`absolute z-20 bg-background overflow-y-auto transition-transform duration-200 ease-in-out ${positionClasses}`}>
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-4 border-b border-border">
         <div className="flex items-center gap-3">

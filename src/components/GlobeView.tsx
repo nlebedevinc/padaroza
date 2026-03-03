@@ -24,12 +24,26 @@ function getCountryColor(iso2: string, passports: string[]): string {
   return (CATEGORY_COLORS[best.req.category] ?? '#3f3f46') + 'cc'
 }
 
+function useGlobeDimensions() {
+  const [dims, setDims] = useState({
+    width:  window.innerWidth  - 48,
+    height: window.innerHeight - 88,
+  })
+  useEffect(() => {
+    const update = () => setDims({ width: window.innerWidth - 48, height: window.innerHeight - 88 })
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+  return dims
+}
+
 export function GlobeView() {
   const globeRef = useRef<GlobeMethods | undefined>(undefined)
   const { passports, setSelectedCountry } = useApp()
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
   const [countries, setCountries] = useState<GeoFeature[]>([])
+  const { width, height } = useGlobeDimensions()
 
   useEffect(() => {
     fetch('/world-110m.json')
@@ -92,8 +106,8 @@ export function GlobeView() {
       polygonLabel={getPolygonLabel}
       onPolygonClick={handleClick}
       polygonsTransitionDuration={300}
-      width={window.innerWidth - 48}
-      height={window.innerHeight - 88}
+      width={width}
+      height={height}
     />
   )
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { X, ChevronsUpDown, AlertCircle, Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useIsMobile } from '@/lib/useIsMobile'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -63,6 +64,7 @@ function CountryCombobox({
   disabled?: boolean
 }) {
   const [open, setOpen] = useState(false)
+  const isMobile = useIsMobile()
   const available = countries.filter(c => !selected.includes(c.iso2))
 
   return (
@@ -79,7 +81,12 @@ function CountryCombobox({
           <ChevronsUpDown className="h-3 w-3 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-64 p-0" side="right" align="start" sideOffset={8}>
+      <PopoverContent
+        className="w-64 p-0"
+        side={isMobile ? 'bottom' : 'right'}
+        align="start"
+        sideOffset={8}
+      >
         <Command>
           <CommandInput placeholder="Search…" className="h-8 text-xs" />
           <CommandList>
