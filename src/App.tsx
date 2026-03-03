@@ -28,7 +28,10 @@ function Layout() {
       <header className="absolute top-0 left-0 right-0 z-30 h-12 border-b border-border bg-background/80 backdrop-blur-sm flex items-center px-4">
         {/* Sidebar clearance — wordmark on sm+, plain spacer on mobile */}
         <div className="w-12 shrink-0 sm:hidden" />
-        <span className="hidden sm:block font-medium tracking-tight text-sm select-none pl-12">padaroza</span>
+        <div className="hidden sm:flex flex-col justify-center pl-12 select-none">
+          <span className="font-medium tracking-tight text-sm leading-tight">padaroza</span>
+          <span className="text-[10px] text-muted-foreground leading-tight tracking-wide">падарожжа · journey</span>
+        </div>
         <div className="flex-1 flex justify-center">
           <ViewToggle />
         </div>

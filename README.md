@@ -4,7 +4,7 @@
 
 > Where can I go, and on what terms?
 
-**padaroza** (Belarusian: падарожа, romanized: *padarožа*, lit. "journey") — A minimal, full-screen world visa map. Select your passport — every country fills with a color showing your access conditions. Hold multiple citizenships or residencies? Add them all; the map shows your best access across the board.
+**padaroza** (Belarusian: падарожжа, romanized: *padarožža*, lit. "journey") — A minimal, full-screen world visa map. Select your passport — every country fills with a color showing your access conditions. Hold multiple citizenships or residencies? Add them all; the map shows your best access across the board.
 
 ![padaroza screenshot](./docs/screenshot.png)
 
