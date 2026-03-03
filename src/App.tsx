@@ -10,6 +10,7 @@ import { LanguageToggle } from '@/components/LanguageToggle'
 import { Legend } from '@/components/Legend'
 import { StatsBar } from '@/components/StatsBar'
 import { CountrySheet } from '@/components/CountrySheet'
+import { WelcomeOverlay } from '@/components/WelcomeOverlay'
 import { IdentityPanel } from '@/components/panels/IdentityPanel'
 import { StatsPanel } from '@/components/panels/StatsPanel'
 import { InfoPanel } from '@/components/panels/InfoPanel'
@@ -60,6 +61,7 @@ function Layout() {
         )}
       </div>
 
+      <WelcomeOverlay />
       <Legend />
       <StatsBar />
       <CountrySheet />

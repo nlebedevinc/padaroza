@@ -71,6 +71,11 @@ const en = {
     visaRequired:   'Visa req.',
     noEntry:        'No entry',
   },
+  welcome: {
+    headline:    'Where can you go?',
+    description: 'Select your passport — every country fills with a color showing your visa access conditions.',
+    cta:         'Add your passport',
+  },
   language: {
     en: 'English',
     ru: 'Русский',
