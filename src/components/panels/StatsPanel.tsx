@@ -1,6 +1,7 @@
+import { useTranslation } from 'react-i18next'
 import { Separator } from '@/components/ui/separator'
 import { useApp } from '@/context/AppContext'
-import { getCombinedStats, getStats, CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/visa-data'
+import { getCombinedStats, getStats, CATEGORY_COLORS } from '@/lib/visa-data'
 import { getCountryName } from '@/lib/countries'
 import type { VisaCategory } from '@/lib/types'
 
@@ -17,11 +18,12 @@ function StatRow({
   flagIso2?: string
   stats: ReturnType<typeof getStats>
 }) {
-  // Merge eta into on-arrival for display
+  const { t } = useTranslation()
+
   const displayCounts: Record<string, number> = {
-    'visa-free': stats['visa-free'],
-    'on-arrival': stats['on-arrival'] + stats['eta'],
-    'e-visa': stats['e-visa'],
+    'visa-free':    stats['visa-free'],
+    'on-arrival':   stats['on-arrival'] + stats['eta'],
+    'e-visa':       stats['e-visa'],
     'visa-required': stats['visa-required'],
     'no-admission': stats['no-admission'],
   }
@@ -29,7 +31,6 @@ function StatRow({
 
   return (
     <div className="space-y-2">
-      {/* Header */}
       <div className="flex items-center gap-1.5">
         {flagIso2 && (
           <img
@@ -46,16 +47,14 @@ function StatRow({
         </span>
       </div>
 
-      {/* Stacked bar */}
       <div className="flex h-1.5 w-full overflow-hidden rounded-sm bg-muted">
         {BAR_CATEGORIES.map(cat => {
-          const key = cat === 'on-arrival' ? 'on-arrival' : cat
-          const count = displayCounts[key] ?? 0
+          const count = displayCounts[cat] ?? 0
           if (!count) return null
           return (
             <div
               key={cat}
-              title={`${CATEGORY_LABELS[cat]}: ${count}`}
+              title={`${t(`categories.${cat}`)}: ${count}`}
               style={{
                 width: `${(count / displayTotal) * 100}%`,
                 backgroundColor: CATEGORY_COLORS[cat],
@@ -65,10 +64,9 @@ function StatRow({
         })}
       </div>
 
-      {/* Numeric breakdown */}
       <div className="flex gap-x-3 gap-y-0.5 flex-wrap">
         {BAR_CATEGORIES.map(cat => {
-          const count = displayCounts[cat === 'on-arrival' ? 'on-arrival' : cat] ?? 0
+          const count = displayCounts[cat] ?? 0
           return (
             <span key={cat} className="flex items-center gap-1 text-[11px] text-muted-foreground">
               <span
@@ -86,11 +84,12 @@ function StatRow({
 
 export function StatsPanel() {
   const { passports } = useApp()
+  const { t } = useTranslation()
 
   if (passports.length === 0) {
     return (
       <div className="p-4 text-xs text-muted-foreground">
-        Add a passport in the Identity panel to see statistics.
+        {t('stats.noPassport')}
       </div>
     )
   }
@@ -100,7 +99,7 @@ export function StatsPanel() {
   return (
     <div className="p-4 space-y-5">
       <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-        Statistics
+        {t('stats.title')}
       </p>
 
       {passports.map(iso2 => (
@@ -117,9 +116,9 @@ export function StatsPanel() {
           <Separator />
           <div className="space-y-1">
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground/70">
-              Combined · best access
+              {t('stats.combined')}
             </p>
-            <StatRow label="All passports" stats={combined} />
+            <StatRow label={t('stats.allPassports')} stats={combined} />
           </div>
         </>
       )}

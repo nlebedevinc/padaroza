@@ -1,17 +1,18 @@
 import { X, ExternalLink } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useApp } from '@/context/AppContext'
-import { getBestRequirement, CATEGORY_COLORS, CATEGORY_LABELS } from '@/lib/visa-data'
+import { getBestRequirement, CATEGORY_COLORS } from '@/lib/visa-data'
 import { getCountryName } from '@/lib/countries'
 
 export function CountrySheet() {
   const { selectedCountry, setSelectedCountry, passports } = useApp()
+  const { t } = useTranslation()
 
   const open = !!selectedCountry
   const isOwnCountry = passports.includes(selectedCountry ?? '')
-  const bestResult =
-    passports.length > 0 && selectedCountry && !isOwnCountry
+  const bestResult = passports.length > 0 && selectedCountry && !isOwnCountry
       ? getBestRequirement(passports, selectedCountry)
       : null
 
@@ -54,24 +55,22 @@ export function CountrySheet() {
       <div className="px-4 py-5 space-y-4">
         {isOwnCountry ? (
           <p className="text-sm text-muted-foreground">
-            {passports.length > 1
-              ? 'This is one of your home countries.'
-              : 'This is your home country.'}
+            {passports.length > 1 ? t('sheet.homeCountries') : t('sheet.homeCountry')}
           </p>
         ) : req ? (
           <>
             <div className="space-y-1.5">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">Access</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('sheet.access')}</p>
               <Badge
                 className="text-sm font-medium text-white border-0"
                 style={{ backgroundColor: CATEGORY_COLORS[req.category] }}
               >
-                {CATEGORY_LABELS[req.category]}
+                {t(`categories.${req.category}`)}
               </Badge>
 
               {passports.length > 1 && bestPassport && (
                 <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  Best via
+                  {t('sheet.bestVia')}
                   <img
                     src={`https://flagcdn.com/w20/${bestPassport.toLowerCase()}.png`}
                     alt={getCountryName(bestPassport)}
@@ -88,8 +87,10 @@ export function CountrySheet() {
               <>
                 <Separator />
                 <div className="grid grid-cols-2 gap-y-2 text-sm">
-                  <span className="text-muted-foreground">Duration</span>
-                  <span className="font-mono text-right">{req.days} days</span>
+                  <span className="text-muted-foreground">{t('sheet.duration')}</span>
+                  <span className="font-mono text-right">
+                    {t('sheet.days', { count: req.days })}
+                  </span>
                 </div>
               </>
             )}
@@ -107,11 +108,9 @@ export function CountrySheet() {
             </a>
           </>
         ) : passports.length > 0 ? (
-          <p className="text-sm text-muted-foreground">No visa data available for this destination.</p>
+          <p className="text-sm text-muted-foreground">{t('sheet.noData')}</p>
         ) : (
-          <p className="text-sm text-muted-foreground">
-            Add a passport in the Identity panel to see visa requirements.
-          </p>
+          <p className="text-sm text-muted-foreground">{t('sheet.noPassport')}</p>
         )}
       </div>
     </div>

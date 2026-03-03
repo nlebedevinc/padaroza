@@ -1,13 +1,15 @@
+import { useTranslation } from 'react-i18next'
 import { useApp } from '@/context/AppContext'
 import { getCombinedStats, CATEGORY_COLORS } from '@/lib/visa-data'
 
 export function StatsBar() {
   const { passports } = useApp()
+  const { t } = useTranslation()
 
   if (passports.length === 0) {
     return (
       <div className="absolute bottom-0 left-0 right-0 z-10 h-10 border-t border-border bg-background/80 backdrop-blur-sm flex items-center justify-center">
-        <span className="text-xs text-muted-foreground">Select a passport to see access statistics</span>
+        <span className="text-xs text-muted-foreground">{t('statsBar.selectPassport')}</span>
       </div>
     )
   }
@@ -15,11 +17,11 @@ export function StatsBar() {
   const { combined: stats } = getCombinedStats(passports)
 
   const items = [
-    { label: 'Visa-free',  count: stats['visa-free'],                        color: CATEGORY_COLORS['visa-free'] },
-    { label: 'On arrival', count: stats['on-arrival'] + stats['eta'],        color: CATEGORY_COLORS['on-arrival'] },
-    { label: 'E-visa',     count: stats['e-visa'],                           color: CATEGORY_COLORS['e-visa'] },
-    { label: 'Visa req.',  count: stats['visa-required'],                    color: CATEGORY_COLORS['visa-required'] },
-    { label: 'No entry',   count: stats['no-admission'],                     color: CATEGORY_COLORS['no-admission'] },
+    { label: t('statsBar.visaFree'),    count: stats['visa-free'],                 color: CATEGORY_COLORS['visa-free']    },
+    { label: t('statsBar.onArrival'),   count: stats['on-arrival'] + stats['eta'], color: CATEGORY_COLORS['on-arrival']   },
+    { label: t('statsBar.eVisa'),       count: stats['e-visa'],                    color: CATEGORY_COLORS['e-visa']       },
+    { label: t('statsBar.visaRequired'), count: stats['visa-required'],            color: CATEGORY_COLORS['visa-required'] },
+    { label: t('statsBar.noEntry'),     count: stats['no-admission'],              color: CATEGORY_COLORS['no-admission'] },
   ]
 
   return (

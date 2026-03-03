@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X, ChevronsUpDown, AlertCircle, Plus } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -117,11 +118,11 @@ function CountryCombobox({
 
 export function IdentityPanel() {
   const { passports, setPassports, residencies, setResidencies } = useApp()
+  const { t } = useTranslation()
 
-  const addPassport = (iso2: string) => setPassports([...passports, iso2])
+  const addPassport    = (iso2: string) => setPassports([...passports, iso2])
   const removePassport = (iso2: string) => setPassports(passports.filter(p => p !== iso2))
-
-  const addResidency = (iso2: string) => setResidencies([...residencies, iso2])
+  const addResidency   = (iso2: string) => setResidencies([...residencies, iso2])
   const removeResidency = (iso2: string) => setResidencies(residencies.filter(r => r !== iso2))
 
   return (
@@ -129,14 +130,12 @@ export function IdentityPanel() {
       {/* Passports */}
       <div className="space-y-3">
         <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-          Passports
-          <span className="ml-1 text-muted-foreground/60">({passports.length}/3)</span>
+          {t('identity.passports')}
+          <span className="ml-1 text-muted-foreground/60">{t('identity.passportsCount', { count: passports.length })}</span>
         </p>
 
         {passports.length === 0 && (
-          <p className="text-xs text-muted-foreground">
-            Add up to 3 passports — the map shows your best access across all of them.
-          </p>
+          <p className="text-xs text-muted-foreground">{t('identity.passportsHint')}</p>
         )}
 
         {passports.length > 0 && (
@@ -151,7 +150,7 @@ export function IdentityPanel() {
           countries={PASSPORT_COUNTRIES}
           selected={passports}
           onSelect={addPassport}
-          placeholder="Add passport"
+          placeholder={t('identity.addPassport')}
           disabled={passports.length >= 3}
         />
       </div>
@@ -161,12 +160,14 @@ export function IdentityPanel() {
       {/* Residencies */}
       <div className="space-y-3">
         <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-          Residency
-          <span className="ml-1.5 normal-case tracking-normal font-normal text-muted-foreground/60">coming soon</span>
+          {t('identity.residency')}
+          <span className="ml-1.5 normal-case tracking-normal font-normal text-muted-foreground/60">
+            {t('identity.residencyComingSoon')}
+          </span>
         </p>
 
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Residence permits unlock real travel access — a US Green Card, Schengen residence permit, or UAE residence each let you enter certain countries that your passport alone wouldn't. We're working on mapping this data.
+          {t('identity.residencyDescription')}
         </p>
 
         {residencies.length > 0 && (
@@ -181,13 +182,13 @@ export function IdentityPanel() {
           countries={ALL_COUNTRIES}
           selected={residencies}
           onSelect={addResidency}
-          placeholder="Add residency"
+          placeholder={t('identity.addResidency')}
         />
 
         {residencies.length > 0 && (
           <div className="flex gap-1.5 text-xs text-muted-foreground">
             <AlertCircle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-            <span>Saved for when the data is ready — not yet reflected on the map.</span>
+            <span>{t('identity.residencySaved')}</span>
           </div>
         )}
       </div>

@@ -1,8 +1,10 @@
+import { useTranslation } from 'react-i18next'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useApp } from '@/context/AppContext'
 
 export function ViewToggle() {
   const { viewMode, setViewMode } = useApp()
+  const { t } = useTranslation()
 
   return (
     <ToggleGroup
@@ -12,10 +14,10 @@ export function ViewToggle() {
       className="border border-border rounded-md"
     >
       <ToggleGroupItem value="map" className="text-xs px-3 h-7 rounded-l-md">
-        Map
+        {t('nav.map')}
       </ToggleGroupItem>
       <ToggleGroupItem value="globe" className="text-xs px-3 h-7 rounded-r-md">
-        Globe
+        {t('nav.globe')}
       </ToggleGroupItem>
     </ToggleGroup>
   )
