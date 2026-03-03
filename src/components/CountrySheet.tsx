@@ -12,16 +12,15 @@ export function CountrySheet() {
 
   const open = !!selectedCountry
   const isOwnCountry = passports.includes(selectedCountry ?? '')
-  const bestResult =
-    passports.length > 0 && selectedCountry && !isOwnCountry
+  const bestResult = passports.length > 0 && selectedCountry && !isOwnCountry
       ? getBestRequirement(passports, selectedCountry)
       : null
 
-  const req          = bestResult?.req ?? null
+  const req = bestResult?.req ?? null
   const bestPassport = bestResult?.passport ?? null
 
   const countryName = selectedCountry ? getCountryName(selectedCountry) : ''
-  const flagCode    = selectedCountry?.toLowerCase() ?? ''
+  const flagCode = selectedCountry?.toLowerCase() ?? ''
 
   return (
     <div
