@@ -1,16 +1,18 @@
 import { User, BarChart2, Info } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { useApp } from '@/context/AppContext'
 import type { ActivePanel } from '@/lib/types'
 
-const RAIL_ITEMS: { panel: NonNullable<ActivePanel>; Icon: React.ElementType; label: string }[] = [
-  { panel: 'identity', Icon: User,      label: 'Identity'   },
-  { panel: 'stats',    Icon: BarChart2, label: 'Statistics' },
-  { panel: 'info',     Icon: Info,      label: 'About'      },
-]
-
 export function Sidebar() {
   const { activePanel, setActivePanel, passports } = useApp()
+  const { t } = useTranslation()
+
+  const RAIL_ITEMS: { panel: NonNullable<ActivePanel>; Icon: React.ElementType; label: string }[] = [
+    { panel: 'identity', Icon: User,      label: t('sidebar.identity') },
+    { panel: 'stats',    Icon: BarChart2, label: t('sidebar.stats')    },
+    { panel: 'info',     Icon: Info,      label: t('sidebar.about')    },
+  ]
 
   return (
     <div className="absolute left-0 top-12 bottom-10 z-20 w-12 flex flex-col items-center py-2 gap-1 border-r border-border bg-background/80 backdrop-blur-sm">

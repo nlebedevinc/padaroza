@@ -6,6 +6,7 @@ import { MapView } from '@/components/MapView'
 import { Sidebar } from '@/components/Sidebar'
 import { ViewToggle } from '@/components/ViewToggle'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { LanguageToggle } from '@/components/LanguageToggle'
 import { Legend } from '@/components/Legend'
 import { StatsBar } from '@/components/StatsBar'
 import { CountrySheet } from '@/components/CountrySheet'
@@ -28,6 +29,7 @@ function Layout() {
         <div className="flex-1 flex justify-center">
           <ViewToggle />
         </div>
+        <LanguageToggle />
         <ThemeToggle />
       </header>
 
