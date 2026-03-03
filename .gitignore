@@ -57,3 +57,8 @@ CLAUDE.md
 .supermaven/
 *.ai-context
 *.llm-context
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
