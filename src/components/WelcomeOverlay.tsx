@@ -10,7 +10,7 @@ export function WelcomeOverlay() {
   if (passports.length > 0) return null
 
   return (
-    <div className="absolute inset-0 top-12 bottom-10 left-12 z-10 flex items-center justify-center pointer-events-none px-4">
+    <div className="absolute inset-0 top-12 bottom-10 sm:left-12 z-10 flex items-center justify-center pointer-events-none px-4">
       <div className="flex flex-col items-center gap-4 text-center pointer-events-auto w-full max-w-sm">
         <h1 className="text-2xl font-medium tracking-tight text-foreground/80">
           {t('welcome.headline')}
