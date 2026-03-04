@@ -1,4 +1,5 @@
-import { useRef, useEffect, useCallback, useState } from 'react'
+import { useRef, useEffect, useCallback, useState, useMemo } from 'react'
+import { MeshPhongMaterial, Color } from 'three'
 import Globe, { type GlobeMethods } from 'react-globe.gl'
 import { feature } from 'topojson-client'
 import type { Topology } from 'topojson-specification'
@@ -14,14 +15,13 @@ interface GeoFeature {
   geometry: unknown
 }
 
-// Globe is always dark regardless of app theme
-function getCountryColor(iso2: string, passports: string[]): string {
-  const noData = '#3f3f46cc'
+function getCountryColor(iso2: string, passports: string[], isDark: boolean): string {
+  const noData = isDark ? '#3f3f46cc' : '#d4d4d8cc'
   if (passports.length === 0) return noData
-  if (passports.includes(iso2)) return '#52525bcc'
+  if (passports.includes(iso2)) return isDark ? '#52525bcc' : '#a1a1aacc'
   const best = getBestRequirement(passports, iso2)
   if (!best) return noData
-  return (CATEGORY_COLORS[best.req.category] ?? '#3f3f46') + 'cc'
+  return (CATEGORY_COLORS[best.req.category] ?? (isDark ? '#3f3f46' : '#d4d4d8')) + 'cc'
 }
 
 function useGlobeDimensions() {
@@ -46,6 +46,12 @@ export function GlobeView() {
   const [countries, setCountries] = useState<GeoFeature[]>([])
   const { width, height } = useGlobeDimensions()
 
+  const globeMaterial = useMemo(() => {
+    const mat = new MeshPhongMaterial()
+    mat.color = new Color(isDark ? '#09090b' : '#cbd5e1')
+    return mat
+  }, [isDark])
+
   useEffect(() => {
     fetch('/world-110m.json')
       .then(r => r.json())
@@ -68,9 +74,9 @@ export function GlobeView() {
     (feat: object) => {
       const geo = feat as GeoFeature
       const iso2 = numericToIso2(geo.id as string)
-      return getCountryColor(iso2, passports)
+      return getCountryColor(iso2, passports, isDark)
     },
-    [passports]
+    [passports, isDark]
   )
 
   const getPolygonLabel = useCallback((feat: object) => {
@@ -93,16 +99,18 @@ export function GlobeView() {
 
   return (
     <Globe
+      key={resolvedTheme}
       ref={globeRef}
       globeImageUrl=""
+      globeMaterial={globeMaterial}
       backgroundColor={isDark ? '#09090b' : '#f4f4f5'}
-      atmosphereColor="#3f3f46"
+      atmosphereColor={isDark ? '#3f3f46' : '#a1a1aa'}
       atmosphereAltitude={0.15}
       polygonsData={countries}
       polygonGeoJsonGeometry={(d: object) => (d as GeoFeature).geometry as never}
       polygonCapColor={getPolygonColor}
-      polygonSideColor={() => 'rgba(0,0,0,0.15)'}
-      polygonStrokeColor={() => 'rgba(255,255,255,0.18)'}
+      polygonSideColor={() => isDark ? 'rgba(0,0,0,0.15)' : 'rgba(0,0,0,0.08)'}
+      polygonStrokeColor={() => isDark ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.2)'}
       polygonAltitude={0.005}
       polygonLabel={getPolygonLabel}
       onPolygonClick={handleClick}
