@@ -25,12 +25,13 @@ function getCountryColor(iso2: string, passports: string[]): string {
 }
 
 function useGlobeDimensions() {
+  const sidebarW = () => (window.innerWidth >= 640 ? 48 : 0)
   const [dims, setDims] = useState({
-    width:  window.innerWidth  - 48,
+    width:  window.innerWidth  - sidebarW(),
     height: window.innerHeight - 88,
   })
   useEffect(() => {
-    const update = () => setDims({ width: window.innerWidth - 48, height: window.innerHeight - 88 })
+    const update = () => setDims({ width: window.innerWidth - sidebarW(), height: window.innerHeight - 88 })
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   }, [])

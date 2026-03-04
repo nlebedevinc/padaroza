@@ -38,7 +38,7 @@ export function MobileNav() {
         </button>
       </SheetTrigger>
 
-      <SheetContent side="left" className="p-0 flex flex-col gap-0" showCloseButton={false}>
+      <SheetContent side="left" className="p-0 flex flex-col gap-0" showCloseButton={false} style={{ top: '48px', height: 'calc(100dvh - 48px)' }}>
         {/* Tab bar */}
         <div className="flex border-b border-border shrink-0">
           {tabs.map(({ id, Icon, label }) => (
